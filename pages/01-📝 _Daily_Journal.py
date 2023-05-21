@@ -100,9 +100,9 @@ dates = list(set(dates1+dates2))
 
 def get_answer(date,user):
     formula = match({'Date':date})
-    question = table.first(formula=formula)['fields']['Kinky-Question']
+    question = table.first(formula=formula)['fields']['Question']
     try:
-        answer = table.first(formula=formula)['fields'][f'{user}-Kinky-Answer']
+        answer = table.first(formula=formula)['fields'][f'{user}-Answer']
     except KeyError:
         answer = None
     return question,answer
