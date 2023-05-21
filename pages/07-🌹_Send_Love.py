@@ -76,10 +76,19 @@ with st.form('long note',clear_on_submit=True):
 st.write('# Our Correspondance')
 
 all_letters = table.all() 
-with st.empty():
-    st.markdown(
+
+
+with st.container():
+    
+    for i in all_letters:
+        st.write(f"### From {i['fields']['Author']} at {i['fields']['Time']}")
+        st.write("""<div class='PortMarker'/>""", unsafe_allow_html=True)
+
+
+st.markdown(
             """
             <style>
+            div[data-testid="stVerticalBlock"] div[style*="flex-direction: column;"] div[data-testid="stVerticalBlock"]
     @font-face {
     font-family: 'Tangerine';
     font-style: normal;
@@ -97,7 +106,4 @@ with st.empty():
         """,
             unsafe_allow_html=True,
         )
-    for i in all_letters:
-        st.write(f"### From {i['fields']['Author']} at {i['fields']['Time']}")
-        st.write(i['fields']['Letter'])
 
