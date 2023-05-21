@@ -62,7 +62,7 @@ with cols[5]:
 
 with st.form('long note'):
     st.write('## Write a longer note')
-    text = st.text_area()
+    text = st.text_area(label='Enter Note')
     submit = st.form_submit_button('Send 💌')
     if submit:
         now = datetime.now()
