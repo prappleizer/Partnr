@@ -60,14 +60,43 @@ with cols[5]:
     if cuddles:
         send_push(other,f'{User} would like some cuddles please 🧸')
 
-with st.form('long note'):
+
+table = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets["AIRTABLE_BASE_ID"],"Letters")
+with st.form('long note',clear_on_submit=True):
     st.write('## Write a longer note')
     text = st.text_area(label='Enter Note')
     submit = st.form_submit_button('Send 💌')
     if submit:
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-        table = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets["AIRTABLE_BASE_ID"],"Letters")
         table.create({'Time':dt_string,'Author':User,'Letter':text})
         send_push(other,f'{User} sent you a letter 💌')
+
+
+st.write('# Our Correspondance')
+
+all_letters = table.all() 
+st.markdown(
+            """
+            <style>
+    @font-face {
+    font-family: 'Tangerine';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/tangerine/v12/IurY6Y5j_oScZZow4VOxCZZM.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+        html, body, [class*="css"]  {
+        font-family: 'Tangerine';
+        font-size: 48px;
+        }
+        </style>
+
+        """,
+            unsafe_allow_html=True,
+        )
+for i in all_letters:
+    st.write(f"### From {i['fields']['Author']} at {i['fields']['Time']}")
+    st.write(i['fields']['Letter'])
 
