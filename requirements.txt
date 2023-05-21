@@ -1,0 +1,7 @@
+streamlit-authenticator
+pyairtable
+streamlit-echarts
+pandas
+streamlit-drawable-canvas
+altair
+streamlit-extras
