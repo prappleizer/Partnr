@@ -76,7 +76,8 @@ with st.form('long note',clear_on_submit=True):
 st.write('# Our Correspondance')
 
 all_letters = table.all() 
-with st.markdown(
+with st.empty():
+    st.markdown(
             """
             <style>
     @font-face {
