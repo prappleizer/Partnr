@@ -100,21 +100,23 @@ dates = list(set(dates1+dates2))
 
 def get_answer(date,user):
     formula = match({'Date':date})
+    question = table.first(formula=formula)['fields']['Kinky-Question']
     try:
-        one = table.first(formula=formula)['fields'][f'{user}-Answer']
-        print(one)
+        answer = table.first(formula=formula)['fields'][f'{user}-Kinky-Answer']
     except KeyError:
-        one = None
-    return one
+        answer = None
+    return question,answer
     
 
 date_use = st.selectbox('Choose Date to View',options=dates)
 col1,col2 = st.columns(2)
-my_answer = get_answer(date_use,User)
-their_answer = get_answer(date_use,other)
+question,my_answer = get_answer(date_use,User)
+question,their_answer = get_answer(date_use,other)
 with col1:
-    st.write(f'My Answer on {date_use}')
+    st.write(f'#### My Answer on {date_use}')
+    st.write(question)
     st.write(my_answer)
 with col2:
-    st.write(f"{other}'s Answer on {date_use}")
+    st.write(f"#### {other}'s Answer on {date_use}")
+    st.write(question)
     st.write(their_answer)

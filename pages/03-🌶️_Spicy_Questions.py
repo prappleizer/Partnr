@@ -114,10 +114,10 @@ if len(dates)>0:
     question,my_answer = get_answer(date_use,User)
     question,their_answer = get_answer(date_use,other)
     with col1:
-        st.write(f'My Answer on {date_use}')
+        st.write(f'#### My Answer on {date_use}')
         st.write(question)
         st.write(my_answer)
     with col2:
-        st.write(f"{other}'s Answer on {date_use}")
+        st.write(f"#### {other}'s Answer on {date_use}")
         st.write(question)
         st.write(their_answer)
