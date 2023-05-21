@@ -5,7 +5,7 @@ from streamlit_extras.add_vertical_space import add_vertical_space
 from pyairtable import  Table
 from datetime import date
 from pyairtable.formulas import match
-
+import http,urllib
 class Record():
     def __init__(self,api_response):
         self.id = api_response['id']
@@ -38,21 +38,6 @@ if st.session_state.get("role") not in ["Imad","Chloe"]:
     st.error("You need to be logged in to access this page.")
     st.stop()
 
-# def add_bg_from_url():
-#     st.markdown(
-#             f"""
-#             <style>
-#             .stApp {{
-#                 background-image: url("https://images.pexels.com/photos/7134985/pexels-photo-7134985.jpeg");
-#                 background-attachment: fixed;
-#                 background-size: cover
-#             }}
-#             </style>
-#             """,
-#             unsafe_allow_html=True
-#         )
-
-# add_bg_from_url() 
 
 today = date.today()
 today = today.strftime("%Y-%m-%d")
@@ -66,6 +51,18 @@ if User == "Imad":
     other = 'Chloe'
 else:
     other = "Imad"
+
+
+def send_push(name,message):
+    conn = http.client.HTTPSConnection("api.pushover.net:443")
+    conn.request("POST", "/1/messages.json",
+    urllib.parse.urlencode({
+        "token": st.secrets['PUSHOVER_TOKEN'],
+        "user": st.secrets[f'PUSHOVER_USER_{name.upper()}'],
+        "message": message,
+    }), { "Content-type": "application/x-www-form-urlencoded" })
+    conn.getresponse()
+    return conn 
 
 
 formula = match({'Date':today})
@@ -83,8 +80,11 @@ else:
         totals = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Totals')
         entry2 = Record(totals.first(formula=match({'Name':'Total-Dailys'})))
         totals.update(entry2.id,{'Number':entry2.Number+1})
-        
         table.update(entry.id,{f"{User}-Kinky-Answer":answer})
+        if f'{other}-Kinky-Answer' in table.get(entry.id)['fields']:
+            send_push(other,f'{User} just filled out their spicy question 😏')
+        else:
+            send_push(other,f'{User} just filled out their spicy question 😏. Add yours now?')
         placeholder.empty()
         st.write('Your Response has been submitted!')
         balloons = st.balloons()
@@ -101,21 +101,23 @@ dates = list(set(dates1+dates2))
 
 def get_answer(date,user):
     formula = match({'Date':date})
+    question = table.first(formula=formula)['fields']['Kinky-Question']
     try:
-        one = table.first(formula=formula)['fields'][f'{user}-Kinky-Answer']
-        print(one)
+        answer = table.first(formula=formula)['fields'][f'{user}-Kinky-Answer']
     except KeyError:
-        one = None
-    return one
+        answer = None
+    return question,answer
     
 if len(dates)>0:
     date_use = st.selectbox('Choose Date to View',options=dates)
     col1,col2 = st.columns(2)
-    my_answer = get_answer(date_use,User)
-    their_answer = get_answer(date_use,other)
+    question,my_answer = get_answer(date_use,User)
+    question,their_answer = get_answer(date_use,other)
     with col1:
         st.write(f'My Answer on {date_use}')
+        st.write(question)
         st.write(my_answer)
     with col2:
         st.write(f"{other}'s Answer on {date_use}")
+        st.write(question)
         st.write(their_answer)
