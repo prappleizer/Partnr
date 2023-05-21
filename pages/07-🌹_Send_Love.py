@@ -48,7 +48,7 @@ with cols[2]:
     if vibes:
         send_push(other,f'{User} sent you Good Vibes 🌈')
 with cols[3]:
-    missing = st.button('I Miss You')
+    missing = st.button('Send an I Miss You')
     if missing:
         send_push(other,f'{User} misses you 😞')
 with cols[4]:
@@ -64,10 +64,10 @@ with st.form('long note'):
     st.write('## Write a longer note')
     text = st.text_area()
     submit = st.form_submit_button('Send 💌')
-if submit:
-    now = datetime.now()
-    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-    table = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets["AIRTABLE_BASE_ID"],"Letters")
-    table.create({'Time':dt_string,'Author':User,'Letter':text})
-    send_push(other,f'{User} sent you a letter 💌')
+    if submit:
+        now = datetime.now()
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        table = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets["AIRTABLE_BASE_ID"],"Letters")
+        table.create({'Time':dt_string,'Author':User,'Letter':text})
+        send_push(other,f'{User} sent you a letter 💌')
 
