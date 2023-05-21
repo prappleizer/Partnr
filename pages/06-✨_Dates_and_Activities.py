@@ -4,7 +4,7 @@ import streamlit as st
 from streamlit_extras.add_vertical_space import add_vertical_space
 from pyairtable import Table
 from pyairtable.formulas import match
-
+import time
 
 if st.session_state.get("role") not in ["Imad","Chloe"]:
     st.error("You need to be logged in to access this page.")
@@ -137,6 +137,7 @@ with tab1:
                 if hasattr(st.session_state.choice,f'{other}-Interest'):
                     if getattr(st.session_state.choice,f'{other}-Interest') in ['Maybe','Yes']:
                         st.balloons()
+                        time.sleep(3)
                         st.expander('You got a Match!')
                 
                 with st.spinner('Loading Next'):
