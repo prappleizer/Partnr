@@ -4,7 +4,7 @@ import streamlit as st
 from streamlit_extras.add_vertical_space import add_vertical_space
 from pyairtable import Table
 from pyairtable.formulas import match
-
+import time
 
 if st.session_state.get("role") not in ["Imad","Chloe"]:
     st.error("You need to be logged in to access this page.")
@@ -86,9 +86,9 @@ def retrieve_matches(table):
 
 table = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Positions')
 # First retrieve all positions for which YOU have not swiped
-if 'choice' not in st.session_state.keys():
-    st.session_state.choice = retrieve_first_empty_record_by_field(table,f'{User}-Interest')
-    #st.session_state.choice = Record(table.first(formula=match({'noimg':'Yes'})))
+if 'matchr_choice' not in st.session_state.keys():
+    st.session_state.matchr_choice = retrieve_first_empty_record_by_field(table,f'{User}-Interest')
+    #st.session_state.matchr_choice = Record(table.first(formula=match({'noimg':'Yes'})))
 
 
 
@@ -101,11 +101,11 @@ tab1, tab2, = st.tabs(["Explore","🔥Matches🔥"])
 with tab1:
     placeholder = st.empty()
     with placeholder.form('Entry'):
-        st.write(f"## {st.session_state.choice.Name}")
-        if hasattr(st.session_state.choice,'noimg'):
-            st.markdown(st.session_state.choice.Description)
+        st.write(f"## {st.session_state.matchr_choice.Name}")
+        if hasattr(st.session_state.matchr_choice,'noimg'):
+            st.markdown(st.session_state.matchr_choice.Description)
         else:
-            st.image(f"./img/crop/{st.session_state.choice.Number}.jpg",use_column_width='always')
+            st.image(f"./img/crop/{st.session_state.matchr_choice.Number}.jpg",use_column_width='always')
         cols = st.columns([1,1,1])
 
         with cols[0]:
@@ -114,14 +114,15 @@ with tab1:
                 totals = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Totals')
                 entry = totals.first(formula=match({'Name':'Total-Swipes'}))
                 totals.update(entry['id'],{'Number':entry['fields']['Number']+1})
-                if hasattr(st.session_state.choice,f'{other}-Interest'):
-                    if getattr(st.session_state.choice,f'{other}-Interest') in ['Maybe','Yes']:
+                if hasattr(st.session_state.matchr_choice,f'{other}-Interest'):
+                    if getattr(st.session_state.matchr_choice,f'{other}-Interest') in ['Maybe','Yes']:
                         st.balloons()
                         st.expander('You got a Match!')
+                        time.sleep(3)
                 with st.spinner('Loading Next'):
-                    table.update(st.session_state.choice.id,{f'{User}-Interest':'Yes'})
+                    table.update(st.session_state.matchr_choice.id,{f'{User}-Interest':'Yes'})
                     #placeholder.empty()
-                    st.session_state.choice = retrieve_first_empty_record_by_field(table,f'{User}-Interest')
+                    st.session_state.matchr_choice = retrieve_first_empty_record_by_field(table,f'{User}-Interest')
                     st.experimental_rerun()
         with cols[1]:
             no = st.form_submit_button("No",use_container_width=True)
@@ -130,9 +131,9 @@ with tab1:
                 entry = totals.first(formula=match({'Name':'Total-Swipes'}))
                 totals.update(entry['id'],{'Number':entry['fields']['Number']+1})
                 with st.spinner('Loading Next'):
-                    table.update(st.session_state.choice.id,{f'{User}-Interest':'No'})
+                    table.update(st.session_state.matchr_choice.id,{f'{User}-Interest':'No'})
                     #placeholder.empty()
-                    st.session_state.choice = retrieve_first_empty_record_by_field(table,f'{User}-Interest')
+                    st.session_state.matchr_choice = retrieve_first_empty_record_by_field(table,f'{User}-Interest')
                     st.experimental_rerun()
         with cols[2]:
             maybe = st.form_submit_button("Maybe",use_container_width=True)
@@ -140,17 +141,18 @@ with tab1:
                 totals = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Totals')
                 entry = totals.first(formula=match({'Name':'Total-Swipes'}))
                 totals.update(entry['id'],{'Number':entry['fields']['Number']+1})
-                table.update(st.session_state.choice.id,{f'{User}-Interest':'Maybe'})
-                if hasattr(st.session_state.choice,f'{other}-Interest'):
-                    if getattr(st.session_state.choice,f'{other}-Interest') in ['Maybe','Yes']:
+                table.update(st.session_state.matchr_choice.id,{f'{User}-Interest':'Maybe'})
+                if hasattr(st.session_state.matchr_choice,f'{other}-Interest'):
+                    if getattr(st.session_state.matchr_choice,f'{other}-Interest') in ['Maybe','Yes']:
                         st.balloons()
                         st.expander('You got a Match!')
+                        time.sleep(3)
                 
                 with st.spinner('Loading Next'):
                     
                     # Check with 
                     #placeholder.empty()
-                    st.session_state.choice = retrieve_first_empty_record_by_field(table,f'{User}-Interest')
+                    st.session_state.matchr_choice = retrieve_first_empty_record_by_field(table,f'{User}-Interest')
                     st.experimental_rerun()
 
 
