@@ -96,7 +96,7 @@ with st.empty():
 
         """,
             unsafe_allow_html=True,
-        ):
+        )
     for i in all_letters:
         st.write(f"### From {i['fields']['Author']} at {i['fields']['Time']}")
         st.write(i['fields']['Letter'])
