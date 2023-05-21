@@ -105,7 +105,7 @@ with tab1:
         if hasattr(st.session_state.choice,'noimg'):
             st.markdown(st.session_state.choice.Description)
         else:
-            st.image(f"img/crop/{st.session_state.choice.Number}.jpg",use_column_width='always')
+            st.image(f"./img/crop/{st.session_state.choice.Number}.jpg",use_column_width='always')
         cols = st.columns([1,1,1])
 
         with cols[0]:
@@ -165,7 +165,7 @@ with tab2:
                 if hasattr(i,'noimg'):
                     st.markdown(i.Description)
                 else:
-                    st.image(f"img/crop/{i.Number}.jpg",use_column_width='always')
+                    st.image(f"./img/crop/{i.Number}.jpg",use_column_width='always')
     with col2:
         st.write('### Maybes....')
         for i in maybes:
@@ -174,5 +174,5 @@ with tab2:
                 if hasattr(i,'noimg'):
                     st.markdown(i.Description)
                 else:
-                    st.image(f"img/crop/{i.Number}.jpg",use_column_width='always')
+                    st.image(f"./img/crop/{i.Number}.jpg",use_column_width='always')
 
