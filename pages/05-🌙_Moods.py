@@ -3,7 +3,7 @@ from pyairtable import  Table
 from pyairtable.formulas import match
 import pandas as pd
 import altair as alt
-
+import http,urllib
 if st.session_state.get("role") not in ["Imad","Chloe"]:
     st.error("You need to be logged in to access this page.")
     st.stop()
@@ -15,6 +15,18 @@ if User == "Imad":
     other = 'Chloe'
 else:
     other = "Imad"
+
+
+def send_push(name,message):
+    conn = http.client.HTTPSConnection("api.pushover.net:443")
+    conn.request("POST", "/1/messages.json",
+    urllib.parse.urlencode({
+        "token": st.secrets['PUSHOVER_TOKEN'],
+        "user": st.secrets[f'PUSHOVER_USER_{name.upper()}'],
+        "message": message,
+    }), { "Content-type": "application/x-www-form-urlencoded" })
+    conn.getresponse()
+    return conn 
 
 st.title('Set Mood')
 
@@ -59,7 +71,20 @@ if submit:
     totals = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Totals')
     entry = totals.first(formula=match({'Name':'Total-Moodsets'}))
     totals.update(entry['id'],{'Number':entry['fields']['Number']+1})
+    push_string = f'{User} just set their mood(s) to: '
+    if len(select) == 1:
+        push_string += select[0] + '.'
+    elif len(select) == 2:
+        push_string += f"{select[0]} and {select[1]}" + '.'
+    elif len(select) > 2:
+        for i in range(len(select)):
+            if i == len(select):
+                push_string += f' and {select[i]}.'
+            else:
+                push_string += f'{select[i]}, '
 
+
+    send_push(other,push_string)
 st.divider()
 
 

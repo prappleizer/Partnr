@@ -5,12 +5,24 @@ from streamlit_extras.add_vertical_space import add_vertical_space
 from pyairtable import Table
 from datetime import date
 from pyairtable.formulas import match
+import http, urllib 
 
 class Record():
     def __init__(self,api_response):
         self.id = api_response['id']
         for i in api_response['fields']:
             setattr(self,i,api_response['fields'][i])
+
+def send_push(name,message):
+    conn = http.client.HTTPSConnection("api.pushover.net:443")
+    conn.request("POST", "/1/messages.json",
+    urllib.parse.urlencode({
+        "token": st.secrets['PUSHOVER_TOKEN'],
+        "user": st.secrets[f'PUSHOVER_USER_{name.upper()}'],
+        "message": message,
+    }), { "Content-type": "application/x-www-form-urlencoded" })
+    conn.getresponse()
+    return conn 
 
 def retrieve_completed_records_by_field(table,field):
     """returns a list of Record objects for entries in table which have field as empty
@@ -37,22 +49,6 @@ def retrieve_completed_records_by_field(table,field):
 if st.session_state.get("role") not in ["Imad","Chloe"]:
     st.error("You need to be logged in to access this page.")
     st.stop()
-
-# def add_bg_from_url():
-#     st.markdown(
-#             f"""
-#             <style>
-#             .stApp {{
-#                 background-image: url("https://images.pexels.com/photos/2847648/pexels-photo-2847648.jpeg");
-#                 background-attachment: fixed;
-#                 background-size: cover
-#             }}
-#             </style>
-#             """,
-#             unsafe_allow_html=True
-#         )
-
-#add_bg_from_url() 
 
 today = date.today()
 today = today.strftime("%Y-%m-%d")
@@ -87,6 +83,10 @@ else:
         totals.update(entry['id'],{'Number':entry['fields']['Number']+1})
         placeholder.empty()
         st.write('Your Response has been submitted!')
+        if f'{other}-Answer' in table.get(entry.id)['fields']:
+            send_push(other,f"{User} just filled out their daily journal! Check out your answers")
+        else:
+            send_push(other,f"{User} just filled out their daily journal! Fill out yours?")
 
 st.divider()
 st.write('## Previous Answers')
