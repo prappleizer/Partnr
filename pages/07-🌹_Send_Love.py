@@ -78,8 +78,6 @@ st.write('# Our Correspondance')
 all_letters = table.all() 
 
 
-with open('../app/static/syle.css') as f:
-    st.markdown(f'<style>{f.read()}</style>',unsafe_allow_html=True)
 with st.container():
     
     for i in all_letters:
