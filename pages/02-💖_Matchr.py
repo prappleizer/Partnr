@@ -5,6 +5,7 @@ from streamlit_extras.add_vertical_space import add_vertical_space
 from pyairtable import Table
 from pyairtable.formulas import match
 import time
+import http,urllib
 
 if st.session_state.get("role") not in ["Imad","Chloe"]:
     st.error("You need to be logged in to access this page.")
@@ -17,7 +18,16 @@ if User == "Imad":
 else:
     other = "Imad"
 
-
+def send_push(name,message):
+    conn = http.client.HTTPSConnection("api.pushover.net:443")
+    conn.request("POST", "/1/messages.json",
+    urllib.parse.urlencode({
+        "token": st.secrets['PUSHOVER_TOKEN'],
+        "user": st.secrets[f'PUSHOVER_USER_{name.upper()}'],
+        "message": message,
+    }), { "Content-type": "application/x-www-form-urlencoded" })
+    conn.getresponse()
+    return conn 
 
 class Record():
     def __init__(self,api_response):
