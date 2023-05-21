@@ -115,8 +115,8 @@ question,their_answer = get_answer(date_use,other)
 with col1:
     st.write(f'#### My Answer on {date_use}')
     st.write(question)
-    st.write(my_answer)
+    st.write(f"*{my_answer}*")
 with col2:
     st.write(f"#### {other}'s Answer on {date_use}")
     st.write(question)
-    st.write(their_answer)
+    st.write(f"*{their_answer}*")
