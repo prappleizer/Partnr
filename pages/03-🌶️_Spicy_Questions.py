@@ -81,12 +81,13 @@ else:
 
     if submit:
         totals = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Totals')
-        entry = Record(totals.first(formula=match({'Name':'Total-Dailys'})))
-        totals.update(entry.id,{'Number':entry.Number+1})
-        balloons = st.balloons()
+        entry2 = Record(totals.first(formula=match({'Name':'Total-Dailys'})))
+        totals.update(entry2.id,{'Number':entry.Number+1})
+        
         table.update(entry.id,{f"{User}-Kinky-Answer":answer})
         placeholder.empty()
         st.write('Your Response has been submitted!')
+        balloons = st.balloons()
 
 st.divider()
 st.write('## Previous Answers')
