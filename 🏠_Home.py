@@ -12,7 +12,12 @@ import streamlit as st
 import json
 from streamlit_drawable_canvas import st_canvas
 
-
+if 'name' not in st.session_state.keys():
+    st.session_state['name']=None 
+if 'authentication_status' not in st.session_state.keys():
+    st.session_state['authentication_status' ]=None 
+if 'username' not in st.session_state.keys():
+    st.session_state['username']=None 
 
 with open('credentials.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
