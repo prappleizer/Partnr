@@ -76,7 +76,7 @@ with st.form('long note',clear_on_submit=True):
 st.write('# Our Correspondance')
 
 all_letters = table.all() 
-st.markdown(
+with st.markdown(
             """
             <style>
     @font-face {
@@ -95,8 +95,8 @@ st.markdown(
 
         """,
             unsafe_allow_html=True,
-        )
-for i in all_letters:
-    st.write(f"### From {i['fields']['Author']} at {i['fields']['Time']}")
-    st.write(i['fields']['Letter'])
+        ):
+    for i in all_letters:
+        st.write(f"### From {i['fields']['Author']} at {i['fields']['Time']}")
+        st.write(i['fields']['Letter'])
 
