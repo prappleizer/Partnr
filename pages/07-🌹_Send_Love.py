@@ -78,7 +78,7 @@ st.write('# Our Correspondance')
 all_letters = table.all() 
 
 
-with open('./style.css') as f:
+with open('app/static/syle.css') as f:
     st.markdown(f'<style>{f.read()}</style>',unsafe_allow_html=True)
 with st.container():
     
