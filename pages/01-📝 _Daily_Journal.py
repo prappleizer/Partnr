@@ -79,8 +79,8 @@ else:
         balloons = st.balloons()
         table.update(entry.id,{f"{User}-Answer":answer})
         totals = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Totals')
-        entry = totals.first(formula=match({'Name':'Total-Dailys'}))
-        totals.update(entry['id'],{'Number':entry['fields']['Number']+1})
+        entry2 = totals.first(formula=match({'Name':'Total-Dailys'}))
+        totals.update(entry2['id'],{'Number':entry2['fields']['Number']+1})
         placeholder.empty()
         st.write('Your Response has been submitted!')
         if f'{other}-Answer' in table.get(entry.id)['fields']:
