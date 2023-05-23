@@ -102,6 +102,14 @@ def retrieve_untried_matches(table):
     yesses = [i for i in yesses if not hasattr(i,'tried')]
     return yesses
 
+
+def retrieve_attempted(table):
+    formula = match({'tried':'Yes'})
+    tried = table.all(formula=formula)
+    tried = [Record(i) for i in tried]
+    return tried
+
+
 table = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Positions')
 # First retrieve all positions for which YOU have not swiped
 if 'matchr_choice' not in st.session_state.keys():
@@ -114,7 +122,7 @@ if 'matchr_choice' not in st.session_state.keys():
 
 #pic = st.empty() 
 #title = st.empty()
-tab1, tab2,tab3 = st.tabs(["Explore","🔥Matches🔥","Roll the Dice 🎲"])
+tab1, tab2,tab3,tab4 = st.tabs(["Explore","🔥Matches🔥","Roll the Dice 🎲","Our Ratings ⭐️"])
 
 with tab1:
     placeholder = st.empty()
@@ -223,6 +231,37 @@ with tab3:
     reroll = st.button('Roll a new Option')
     if reroll:
         choice = np.random.choice(matches)
+
+
+with tab4:
+    attempted = retrieve_attempted(table)
+    for record in attempted:
+        st.write(f'#### {record.Name}')
+        if hasattr(record,'noimg'):
+            st.markdown(record.Description)
+        else:
+            st.image(f"./img/crop/{record.Number}.jpg",use_column_width='always')
+        if hasattr(record,f"{User}-rating"):
+            st.write(f"**{User}'s ratings")
+            cols = st.columns(3)
+            with cols[0]:
+                st_star_rating('🔥 Rating',5,getattr(record,f"{User}-rating"),25,read_only=True)
+            with cols[1]:
+                st_star_rating('Difficulty',5,getattr(record,f"{User}-difficulty"),25,read_only=True)
+            with cols[2]:
+                st_star_rating('Comfort',5,getattr(record,f"{User}-comfort"),25,read_only=True)
+        if hasattr(record,f"{other}-rating"):
+            st.write(f"**{other}'s ratings")
+            cols = st.columns(3)
+            with cols[0]:
+                st_star_rating('🔥 Rating',5,getattr(record,f"{other}-rating"),25,read_only=True)
+            with cols[1]:
+                st_star_rating('Difficulty',5,getattr(record,f"{other}-difficulty"),25,read_only=True)
+            with cols[2]:
+                st_star_rating('Comfort',5,getattr(record,f"{other}-comfort"),25,read_only=True)
+        st.divider()
+        
+
 
 
 
