@@ -242,7 +242,7 @@ with tab4:
         else:
             st.image(f"./img/crop/{record.Number}.jpg",use_column_width='always')
         if hasattr(record,f"{User}-rating"):
-            st.write(f"**{User}'s ratings")
+            st.write(f"**{User}'s ratings**")
             cols = st.columns(3)
             with cols[0]:
                 st_star_rating('🔥 Rating',5,getattr(record,f"{User}-rating"),25,read_only=True)
@@ -251,7 +251,7 @@ with tab4:
             with cols[2]:
                 st_star_rating('Comfort',5,getattr(record,f"{User}-comfort"),25,read_only=True)
         if hasattr(record,f"{other}-rating"):
-            st.write(f"**{other}'s ratings")
+            st.write(f"**{other}'s ratings**")
             cols = st.columns(3)
             with cols[0]:
                 st_star_rating('🔥 Rating',5,getattr(record,f"{other}-rating"),25,read_only=True)
