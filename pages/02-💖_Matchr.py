@@ -223,11 +223,14 @@ with tab3:
     
         cols = st.columns(3)
         with cols[0]:
-            rating = st_star_rating('🔥 Rating', 5, 3, 25)
+            #rating = st_star_rating('🔥 Rating', 5, 3, 25)
+            rating = st.slider('rating',1,5,3,1)
         with cols[1]:
-            diff = st_star_rating('Difficulty', 5, 3, 25)
+            #diff = st_star_rating('Difficulty', 5, 3, 25)
+            diff = st.slider('rating',1,5,3,1)
         with cols[2]:
-            comf = st_star_rating('Comfort',5,3,25)
+            #comf = st_star_rating('Comfort',5,3,25)
+            comf= st.slider('rating',1,5,3,1)
         submit_extra = st.form_submit_button('Submit')
         if submit_extra:
             table.update(st.session_state.matchr_current_rater.id,{f'{User}-rating':rating,f'{User}-difficulty':diff,f'{User}-comfort':comf,'tried':'Yes'})
