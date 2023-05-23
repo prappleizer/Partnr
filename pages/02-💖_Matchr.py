@@ -100,6 +100,7 @@ def retrieve_untried_matches(table):
     yes = table.all(formula=formula)
     yesses = [Record(i) for i in yes]
     yesses = [i for i in yesses if not hasattr(i,'tried')]
+    st.write(yesses)
     return yesses
 
 
