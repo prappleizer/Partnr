@@ -95,6 +95,18 @@ def retrieve_matches(table):
     maybes = [Record(i) for i in maybe1]+[Record(i) for i in maybe2]+[Record(i) for i in maybe3]
     return yesses,maybes
 
+
+def retrieve_top_picks(table):
+    formula = match({'Imad-Interest':'Fuck-Yes','Chloe-Interest':'Fuck-Yes'})
+    fuck_yes = table.all(formula=formula)
+    formula = match({'Imad-Interest':'Fuck-Yes','Chloe-Interest':'Yes'})
+    yes1 = table.all(formula=formula)
+    formula = match({'Imad-Interest':'Yes','Chloe-Interest':'Fuck-Yes'})
+    yes2 = table.all(formula=formula)
+    recs = [Record(i) for i in fuck_yes] + [Record(i) for i in yes1] + [Record(i) for i in yes2]
+    return recs 
+
+
 def retrieve_untried_matches(table):
     formula = match({'Imad-Interest':'Yes','Chloe-Interest':'Yes'})
     yes = table.all(formula=formula)
@@ -126,7 +138,7 @@ if 'query' not in st.session_state.keys():
 
 #pic = st.empty() 
 #title = st.empty()
-tab1, tab2,tab3,tab4 = st.tabs(["Explore","🔥Matches🔥","Roll the Dice 🎲","Our Ratings ⭐️"])
+tab1, tab2,tab3,tab4,tab5 = st.tabs(["Explore","🔥Matches🔥","Top Picks 🌶","Roll the Dice 🎲","Our Ratings ⭐️"])
 
 with tab1:
     placeholder = st.empty()
@@ -223,8 +235,19 @@ with tab2:
                 else:
                     st.image(f"./img/crop/{i.Number}.jpg",use_column_width='always')
 
-
 with tab3: 
+    st.write('Your Top Picks 🌶')
+    top_picks = retrieve_top_picks(table)
+    for i in top_picks:
+        st.write(f"## {i.Name}")
+        if hasattr(i,'noimg'):
+            st.markdown(i.Description)
+        else:
+            st.image(f"./img/crop/{i.Number}.jpg",use_column_width='always')
+    st.divider()
+
+
+with tab4: 
     st.write("### Here's one of your matches 😏")
     st.write(st.session_state.query.Name)
     query_id = st.session_state.query.id
@@ -264,7 +287,7 @@ with tab3:
         st.experimental_rerun()
 
 
-with tab4:
+with tab5:
     attempted = retrieve_attempted(table)
     for record in attempted:
         st.write(f'#### {record.Name}')
