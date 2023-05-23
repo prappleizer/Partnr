@@ -95,8 +95,8 @@ dates1 = retrieve_completed_records_by_field(table,'Chloe-Answer')
 dates1 = [i.Date for i in dates1]
 dates2 = retrieve_completed_records_by_field(table,'Imad-Answer')
 dates2 = [i.Date for i in dates2]
-dates = list(set(dates1+dates2))
-
+dates = [i for i in dates1 if i in dates2] + [i for i in dates2 if i in dates1]
+dates = sorted(list(set(dates)))
 
 def get_answer(date,user):
     formula = match({'Date':date})
