@@ -197,7 +197,7 @@ with tab3:
     choice = np.random.choice(matches)
     st.write(choice.Name)
     if hasattr(choice,'noimg'):
-        st.markdown(i.Description)
+        st.markdown(choice.Description)
     else:
         st.image(f"./img/crop/{choice.Number}.jpg",use_column_width='always')
     st.write("#### Tried it? What'd you think?")
