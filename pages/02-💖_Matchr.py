@@ -104,14 +104,23 @@ def retrieve_top_picks(table):
     formula = match({'Imad-Interest':'Yes','Chloe-Interest':'Fuck-Yes'})
     yes2 = table.all(formula=formula)
     recs = [Record(i) for i in fuck_yes] + [Record(i) for i in yes1] + [Record(i) for i in yes2]
+    recs = [i for i in recs if not hasattr(i,'tried')]
     return recs 
 
 
 def retrieve_untried_matches(table):
+    formula = match({'Imad-Interest':'Fuck-Yes','Chloe-Interest':'Fuck-Yes'})
+    fuck_yes = table.all(formula=formula)
+    formula = match({'Imad-Interest':'Fuck-Yes','Chloe-Interest':'Yes'})
+    yes1 = table.all(formula=formula)
+    formula = match({'Imad-Interest':'Yes','Chloe-Interest':'Fuck-Yes'})
+    yes2 = table.all(formula=formula)
     formula = match({'Imad-Interest':'Yes','Chloe-Interest':'Yes'})
-    yes = table.all(formula=formula)
-    yesses = [Record(i) for i in yes]
-    yesses = [i for i in yesses if not hasattr(i,'tried')]
+    yes3 = table.all(formula=formula)
+
+    recs = [Record(i) for i in fuck_yes] + [Record(i) for i in yes1] + [Record(i) for i in yes2]+[Record(i) for i in yes3]
+
+    yesses = [i for i in recs if not hasattr(i,'tried')]
     return yesses
 
 
@@ -138,7 +147,7 @@ if 'query' not in st.session_state.keys():
 
 #pic = st.empty() 
 #title = st.empty()
-tab1, tab2,tab3,tab4,tab5 = st.tabs(["Explore","🔥Matches🔥","Top Picks 🌶","Roll the Dice 🎲","Our Ratings ⭐️"])
+tab1, tab2,tab3,tab4,tab5 = st.tabs(["Explore","Matches ✅","Top Picks 🔥","Roll the Dice 🎲","Our Ratings ⭐️"])
 
 with tab1:
     placeholder = st.empty()
@@ -217,7 +226,7 @@ with tab2:
     matches,maybes = retrieve_matches(table)
     col1, col2 = st.columns(2)
     with col1:
-        st.write('### 🔥 Matches 🔥')
+        st.write('### Matches ✅')
         for i in matches:
             st.write(i.Name)
             with st.expander("See Card/Image"):
@@ -236,7 +245,7 @@ with tab2:
                     st.image(f"./img/crop/{i.Number}.jpg",use_column_width='always')
 
 with tab3: 
-    st.write('Your Top Picks 🌶')
+    st.write('Your Top Picks 🔥')
     top_picks = retrieve_top_picks(table)
     for i in top_picks:
         st.write(f"## {i.Name}")
