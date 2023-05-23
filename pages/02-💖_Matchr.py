@@ -109,6 +109,9 @@ def retrieve_attempted(table):
     tried = [Record(i) for i in tried]
     return tried
 
+def retrieve_random_untried(table):
+    attempted = retrieve_attempted(table)
+    return np.random.choice(matches)
 
 table = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Positions')
 # First retrieve all positions for which YOU have not swiped
@@ -208,15 +211,16 @@ if 'matchr_current_rater' not in st.session_state.keys():
     st.session_state.matchr_current_rater = None
 with tab3: 
     st.write("### Here's one of your matches 😏")
-    matches = retrieve_untried_matches(table)
-    st.session_state.matchr_current_rater = np.random.choice(matches)
-    st.write(st.session_state.matchr_current_rater.Name)
-    if hasattr(st.session_state.matchr_current_rater,'noimg'):
-        st.markdown(st.session_state.matchr_current_rater.Description)
-    else:
-        st.image(f"./img/crop/{st.session_state.matchr_current_rater.Number}.jpg",use_column_width='always')
-    st.write("#### Tried it? What'd you think?")
     with st.form('submit-rating'):
+        matches = retrieve_untried_matches(table)
+        st.session_state.matchr_current_rater = np.random.choice(matches)
+        st.write(st.session_state.matchr_current_rater.Name)
+        if hasattr(st.session_state.matchr_current_rater,'noimg'):
+            st.markdown(st.session_state.matchr_current_rater.Description)
+        else:
+            st.image(f"./img/crop/{st.session_state.matchr_current_rater.Number}.jpg",use_column_width='always')
+        st.write("#### Tried it? What'd you think?")
+    
         cols = st.columns(3)
         with cols[0]:
             rating = st_star_rating('🔥 Rating', 5, 3, 25)
@@ -232,7 +236,7 @@ with tab3:
 
     reroll = st.button('Roll a new Option')
     if reroll:
-        st.session_state.matchr_current_rater = np.random.choice(matches)
+        st.session_state.matchr_current_rater = 
 
 
 with tab4:
