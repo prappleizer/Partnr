@@ -78,7 +78,7 @@ if submit:
         push_string += f"{select[0]} and {select[1]}" + '.'
     elif len(select) > 2:
         for i in range(len(select)):
-            if i == len(select):
+            if i == len(select)-1:
                 push_string += f' and {select[i]}.'
             else:
                 push_string += f'{select[i]}, '
