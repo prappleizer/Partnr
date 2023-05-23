@@ -110,7 +110,7 @@ def retrieve_attempted(table):
     return tried
 
 def retrieve_random_untried(table):
-    attempted = retrieve_attempted(table)
+    attempted = retrieve_untried_matches(table)
     return np.random.choice(attempted)
 
 table = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Positions')
