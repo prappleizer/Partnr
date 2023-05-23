@@ -227,8 +227,8 @@ with tab3:
         submit = st.form_submit_button('Submit')
         if submit:
             table.update(st.session_state.matchr_current_rater.id,{f'{User}-rating':rating,f'{User}-difficulty':diff,f'{User}-comfort':comf,'tried':'Yes'})
-            time.sleep(1)
-            st.session_state.matchr_current_rater = np.random.choice(matches)
+
+            st.experimental_rerun()
 
     reroll = st.button('Roll a new Option')
     if reroll:
