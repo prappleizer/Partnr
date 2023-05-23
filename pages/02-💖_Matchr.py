@@ -95,6 +95,12 @@ def retrieve_matches(table):
     maybes = [Record(i) for i in maybe1]+[Record(i) for i in maybe2]+[Record(i) for i in maybe3]
     return yesses,maybes
 
+def retrieve_untried_matches(table):
+    formula = match({'Imad-Interest':'Yes','Chloe-Interest':'Yes'})
+    yes = table.all(formula=formula)
+    yesses = [Record(i) for i in yes]
+    yesses = [i for i in yesses if not hasattr(i,'tried')]
+    return yesses
 
 table = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Positions')
 # First retrieve all positions for which YOU have not swiped
@@ -193,7 +199,7 @@ with tab2:
 
 with tab3: 
     st.write("### Here's one of your matches 😏")
-    matches,maybes = retrieve_matches(table)
+    matches = retrieve_untried_matches(table)
     choice = np.random.choice(matches)
     st.write(choice.Name)
     if hasattr(choice,'noimg'):
@@ -211,7 +217,7 @@ with tab3:
             comf = st_star_rating('Comfort',5,3,25)
         submit = st.form_submit_button('Submit')
         if submit:
-            table.update(choice.id,{f'{User}-rating':rating,f'{User}-difficulty':diff,f'{User}-comfort':comf})
+            table.update(choice.id,{f'{User}-rating':rating,f'{User}-difficulty':diff,f'{User}-comfort':comf,'tried':'Yes'})
             choice = np.random.choice(matches)
 
     reroll = st.button('Roll a new Option')
