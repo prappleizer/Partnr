@@ -207,7 +207,7 @@ with tab3:
             rating = st_star_rating('🔥 Rating', 5, 3, 25)
         with cols[1]:
             diff = st_star_rating('Difficulty', 5, 3, 25)
-        with cols[3]:
+        with cols[2]:
             comf = st_star_rating('Comfort',5,3,25)
         submit = st.form_submit_button('Submit')
         if submit:
