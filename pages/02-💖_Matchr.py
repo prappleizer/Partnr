@@ -110,8 +110,8 @@ def retrieve_attempted(table):
     return tried
 
 def retrieve_random_untried(table):
-    attempted = retrieve_untried_matches(table)
-    return np.random.choice(attempted)
+    unattempted = retrieve_untried_matches(table)
+    return np.random.choice(unattempted)
 
 table = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Positions')
 # First retrieve all positions for which YOU have not swiped
