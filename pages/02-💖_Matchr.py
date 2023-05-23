@@ -237,6 +237,7 @@ with tab3:
             #    table.update(query.id,{f'{User}-comfort':comf,'tried':'Yes'})
         submit_my_ratings = st.form_submit_button('Label')
     if submit_my_ratings:
+        st.write(f'updating table entry {query.Name} with id {query.id}')
         table.update(query.id,{f'{User}-comfort':comf,'tried':'Yes',f'{User}-difficulty':diff,f'{User}-rating':rating})
 
         
