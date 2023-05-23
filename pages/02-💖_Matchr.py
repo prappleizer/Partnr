@@ -218,25 +218,27 @@ with tab3:
     else:
         st.image(f"./img/crop/{query.Number}.jpg",use_column_width='always')
     st.write("#### Tried it? What'd you think?")
+    with st.form('some-random-name'):
+        cols = st.columns(3)
+        with cols[0]:
+            #rating = st_star_rating('🔥 Rating', 5, 3, 25)
+            rating = st.slider('rating',1,5,3,1)
+            #if rating:
+            #    table.update(query.id,{f'{User}-rating':rating,'tried':'Yes'})
+        with cols[1]:
+            #diff = st_star_rating('Difficulty', 5, 3, 25)
+            diff = st.slider('difficulty',1,5,3,1,)
+            #if diff:
+            #    table.update(query.id,{f'{User}-difficulty':diff,'tried':'Yes'})
+        with cols[2]:
+            #comf = st_star_rating('Comfort',5,3,25)
+            comf= st.slider('comfort',1,5,3,1)
+            #if comf:
+            #    table.update(query.id,{f'{User}-comfort':comf,'tried':'Yes'})
+        submit_my_ratings = st.form_submit_button('Label')
+    if submit_my_ratings:
+        table.update(query.id,{f'{User}-comfort':comf,'tried':'Yes',f'{User}-difficulty':diff,f'{User}-rating':rating})
 
-    cols = st.columns(3)
-    with cols[0]:
-        #rating = st_star_rating('🔥 Rating', 5, 3, 25)
-        rating = st.slider('rating',1,5,3,1)
-        if rating:
-            table.update(query.id,{f'{User}-rating':rating,'tried':'Yes'})
-    with cols[1]:
-        #diff = st_star_rating('Difficulty', 5, 3, 25)
-        diff = st.slider('difficulty',1,5,3,1,)
-        if diff:
-            table.update(query.id,{f'{User}-difficulty':diff,'tried':'Yes'})
-    with cols[2]:
-        #comf = st_star_rating('Comfort',5,3,25)
-        comf= st.slider('comfort',1,5,3,1)
-        if comf:
-            table.update(query.id,{f'{User}-comfort':comf,'tried':'Yes'})
-    st.write(query.Name)
-    st.write(query.id)
         
 
     reroll = st.button('Roll a new Option')
