@@ -111,14 +111,15 @@ def retrieve_attempted(table):
 
 def retrieve_random_untried(table):
     attempted = retrieve_attempted(table)
-    return np.random.choice(matches)
+    return np.random.choice(attempted)
 
 table = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Positions')
 # First retrieve all positions for which YOU have not swiped
 if 'matchr_choice' not in st.session_state.keys():
     st.session_state.matchr_choice = retrieve_first_empty_record_by_field(table,f'{User}-Interest')
     #st.session_state.matchr_choice = Record(table.first(formula=match({'noimg':'Yes'})))
-
+if 'query' not in st.session_state.keys():
+    st.session_state.query = retrieve_random_untried(table) 
 
 
 
@@ -210,13 +211,12 @@ with tab2:
 
 with tab3: 
     st.write("### Here's one of your matches 😏")
-    matches = retrieve_untried_matches(table)
-    query= np.random.choice(matches)
-    st.write(query.Name)
-    if hasattr(query,'noimg'):
-        st.markdown(query.Description)
+    st.write(st.session_state.query.Name)
+    query_id = st.session_state.query.id
+    if hasattr(st.session_state.query,'noimg'):
+        st.markdown(st.session_state.query.Description)
     else:
-        st.image(f"./img/crop/{query.Number}.jpg",use_column_width='always')
+        st.image(f"./img/crop/{st.session_state.query.Number}.jpg",use_column_width='always')
     st.write("#### Tried it? What'd you think?")
     with st.form('some-random-name'):
         cols = st.columns(3)
@@ -237,8 +237,8 @@ with tab3:
             #    table.update(query.id,{f'{User}-comfort':comf,'tried':'Yes'})
         submit_my_ratings = st.form_submit_button('Label')
     if submit_my_ratings:
-        st.write(f'updating table entry {query.Name} with id {query.id}')
-        table.update(query.id,{f'{User}-comfort':comf,'tried':'Yes',f'{User}-difficulty':diff,f'{User}-rating':rating})
+        st.write(f'updating table entry {st.session_state.query.Name} with id {st.session_state.query.id}')
+        table.update(st.session_state.query.id,{f'{User}-comfort':comf,'tried':'Yes',f'{User}-difficulty':diff,f'{User}-rating':rating})
 
         
 
