@@ -204,16 +204,17 @@ with tab2:
                 else:
                     st.image(f"./img/crop/{i.Number}.jpg",use_column_width='always')
 
-
+if 'matchr_current_rater' not in st.session_state.keys():
+    st.session_state.matchr_current_rater = None
 with tab3: 
     st.write("### Here's one of your matches 😏")
     matches = retrieve_untried_matches(table)
-    choice = np.random.choice(matches)
-    st.write(choice.Name)
-    if hasattr(choice,'noimg'):
-        st.markdown(choice.Description)
+    st.session_state.matchr_current_rater = np.random.choice(matches)
+    st.write(st.session_state.matchr_current_rater.Name)
+    if hasattr(st.session_state.matchr_current_rater,'noimg'):
+        st.markdown(st.session_state.matchr_current_ratere.Description)
     else:
-        st.image(f"./img/crop/{choice.Number}.jpg",use_column_width='always')
+        st.image(f"./img/crop/{st.session_state.matchr_current_rater.Number}.jpg",use_column_width='always')
     st.write("#### Tried it? What'd you think?")
     with st.form('submit-rating'):
         cols = st.columns(3)
@@ -225,12 +226,13 @@ with tab3:
             comf = st_star_rating('Comfort',5,3,25)
         submit = st.form_submit_button('Submit')
         if submit:
-            table.update(choice.id,{f'{User}-rating':rating,f'{User}-difficulty':diff,f'{User}-comfort':comf,'tried':'Yes'})
-            choice = np.random.choice(matches)
+            table.update(st.session_state.matchr_current_rater.id,{f'{User}-rating':rating,f'{User}-difficulty':diff,f'{User}-comfort':comf,'tried':'Yes'})
+            time.sleep(1)
+            st.session_state.matchr_current_rater = np.random.choice(matches)
 
     reroll = st.button('Roll a new Option')
     if reroll:
-        choice = np.random.choice(matches)
+        st.session_state.matchr_current_rater = np.random.choice(matches)
 
 
 with tab4:
