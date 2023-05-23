@@ -230,7 +230,7 @@ with tab3:
         with cols[2]:
             #comf = st_star_rating('Comfort',5,3,25)
             comf= st.slider('comfort',1,5,3,1)
-        submit_extra = st.form_submit_button('Submit')
+        submit_extra = st.form_submit_button('Submit-rating-form')
         st.write(query.Name)
         st.write(query.id)
     if submit_extra:
