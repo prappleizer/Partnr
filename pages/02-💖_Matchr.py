@@ -201,8 +201,19 @@ with tab3:
     else:
         st.image(f"./img/crop/{choice.Number}.jpg",use_column_width='always')
     st.write("#### Tried it? What'd you think?")
-    rating = st_star_rating('How 🔥?', 5, 3, 30)
-    diff = st_star_rating('How comfortable?', 5, 3, 30)
+    with st.form('submit-rating'):
+        cols = st.columns(3)
+        with cols[0]:
+            rating = st_star_rating('🔥 Rating', 5, 3, 25)
+        with cols[1]:
+            diff = st_star_rating('Difficulty', 5, 3, 25)
+        with cols[3]:
+            comf = st_star_rating('Comfort',5,3,25)
+        submit = st.form_submit_button('Submit')
+        if submit:
+            table.update(choice.id,{f'{User}-rating':rating,f'{User}-difficulty':diff,f'{User}-comfort':comf})
+            choice = np.random.choice(matches)
+
     reroll = st.button('Roll a new Option')
     if reroll:
         choice = np.random.choice(matches)
