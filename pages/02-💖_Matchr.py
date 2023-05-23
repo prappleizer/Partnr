@@ -136,9 +136,24 @@ with tab1:
             st.markdown(st.session_state.matchr_choice.Description)
         else:
             st.image(f"./img/crop/{st.session_state.matchr_choice.Number}.jpg",use_column_width='always')
-        cols = st.columns([1,1,1])
-
+        cols = st.columns([1,1,1,1])
         with cols[0]:
+            fuckyes = st.form_submit_button("Fuck Yes 🔥",use_container_width=True)
+            if fuckyes:
+                totals = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Totals')
+                entry = totals.first(formula=match({'Name':'Total-Swipes'}))
+                totals.update(entry['id'],{'Number':entry['fields']['Number']+1})
+                if hasattr(st.session_state.matchr_choice,f'{other}-Interest'):
+                    if getattr(st.session_state.matchr_choice,f'{other}-Interest') in ['Maybe','Yes','Fuck-Yes']:
+                        st.balloons()
+                        st.expander('You got a Match!')
+                        time.sleep(3)
+                with st.spinner('Loading Next'):
+                    table.update(st.session_state.matchr_choice.id,{f'{User}-Interest':'Fuck-Yes'})
+                    #placeholder.empty()
+                    st.session_state.matchr_choice = retrieve_first_empty_record_by_field(table,f'{User}-Interest')
+                    st.experimental_rerun()
+        with cols[1]:
             yes = st.form_submit_button("Yes",use_container_width=True)
             if yes:
                 totals = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Totals')
@@ -154,7 +169,7 @@ with tab1:
                     #placeholder.empty()
                     st.session_state.matchr_choice = retrieve_first_empty_record_by_field(table,f'{User}-Interest')
                     st.experimental_rerun()
-        with cols[1]:
+        with cols[2]:
             no = st.form_submit_button("No",use_container_width=True)
             if no:
                 totals = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Totals')
@@ -165,7 +180,7 @@ with tab1:
                     #placeholder.empty()
                     st.session_state.matchr_choice = retrieve_first_empty_record_by_field(table,f'{User}-Interest')
                     st.experimental_rerun()
-        with cols[2]:
+        with cols[3]:
             maybe = st.form_submit_button("Maybe",use_container_width=True)
             if maybe:
                 totals = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Totals')
