@@ -232,12 +232,11 @@ with tab3:
         if submit:
             table.update(st.session_state.matchr_current_rater.id,{f'{User}-rating':rating,f'{User}-difficulty':diff,f'{User}-comfort':comf,'tried':'Yes'})
 
-            st.experimental_rerun()
+
 
     reroll = st.button('Roll a new Option')
     if reroll:
-        #st.session_state.matchr_current_rater =  np.random.choice(matches)
-        st.experimental_rerun()
+        st.session_state.matchr_current_rater =  np.random.choice(matches)
 
 
 with tab4:
