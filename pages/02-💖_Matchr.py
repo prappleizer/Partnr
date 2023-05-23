@@ -210,7 +210,7 @@ with tab2:
 
 with tab3: 
     st.write("### Here's one of your matches 😏")
-    with st.form('submit-rating'):
+    with st.form('submit-rating',clear_on_submit=True):
         matches = retrieve_untried_matches(table)
         query= np.random.choice(matches)
         st.write(query.Name)
