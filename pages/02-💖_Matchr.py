@@ -6,6 +6,7 @@ from pyairtable import Table
 from pyairtable.formulas import match
 import time
 import http,urllib
+import numpy as np 
 
 if st.session_state.get("role") not in ["Imad","Chloe"]:
     st.error("You need to be logged in to access this page.")
@@ -106,7 +107,7 @@ if 'matchr_choice' not in st.session_state.keys():
 
 #pic = st.empty() 
 #title = st.empty()
-tab1, tab2, = st.tabs(["Explore","🔥Matches🔥"])
+tab1, tab2,tab3 = st.tabs(["Explore","🔥Matches🔥","Roll the Dice 🎲"])
 
 with tab1:
     placeholder = st.empty()
@@ -187,4 +188,15 @@ with tab2:
                     st.markdown(i.Description)
                 else:
                     st.image(f"./img/crop/{i.Number}.jpg",use_column_width='always')
+
+
+with tab3: 
+    st.write("### Here's one of your matches 😏")
+    matches,maybes = retrieve_matches(table)
+    choice = np.random.choice(matches)
+    if hasattr(i,'noimg'):
+        st.markdown(i.Description)
+    else:
+        st.image(f"./img/crop/{i.Number}.jpg",use_column_width='always')
+        
 
