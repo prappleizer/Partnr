@@ -212,7 +212,7 @@ with tab3:
     st.session_state.matchr_current_rater = np.random.choice(matches)
     st.write(st.session_state.matchr_current_rater.Name)
     if hasattr(st.session_state.matchr_current_rater,'noimg'):
-        st.markdown(st.session_state.matchr_current_ratere.Description)
+        st.markdown(st.session_state.matchr_current_rater.Description)
     else:
         st.image(f"./img/crop/{st.session_state.matchr_current_rater.Number}.jpg",use_column_width='always')
     st.write("#### Tried it? What'd you think?")
