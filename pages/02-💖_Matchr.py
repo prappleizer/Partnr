@@ -231,11 +231,11 @@ with tab3:
             #comf = st_star_rating('Comfort',5,3,25)
             comf= st.slider('comfort',1,5,3,1)
         submit_extra = st.form_submit_button('Submit')
-        st.write(query.name)
+        st.write(query.Name)
         st.write(query.id)
         if submit_extra:
             #print('test')
-            st.write(query.name)
+            st.write(query.Name)
             st.write(query.id)
             table.update(query.id,{f'{User}-rating':rating,f'{User}-difficulty':diff,f'{User}-comfort':comf,'tried':'Yes'})
 
