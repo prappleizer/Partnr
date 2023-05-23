@@ -71,12 +71,13 @@ with col1:
                     if i in entry['fields'][f'{other}-Answer']:
                         score+=1
                         st.write(f'You were right! {other} chose {i}')
-                if score ==0:
-                    st.error('Aw, you did not get any right')
-                else:
-                    st.write(f'You got {score} correct!')
-                    st.write(f"All of {other}'s answers: ")
-                    st.write(entry['fields'][f'{other}-Answer'])
+                    if i not in entry['fields'][f'{other}-Answer']:
+                        score -= 1
+                        st.write(f"Ruh Roh, {other} didn't choose {i}...")
+
+                st.write(f'You got a score of {score}.')
+                st.write(f"All of {other}'s answers: ")
+                st.write(entry['fields'][f'{other}-Answer'])
                 table.update(rec_id,{f'{User}-Score':score})
             else:
                 st.write('Guess has been input, waiting on your partner!') 
@@ -93,10 +94,12 @@ with col1:
                         if i in entry['fields'][f'{other}-Answer']:
                             score+=1
                             st.write(f'You were right! {other} chose {i}')
-                    if score ==0:
-                        st.error('Aw, you did not get any right')
-                    else:
-                        st.write(f'You got {score} correct!')
+                        else:
+                            score-=1
+                            st.write(f"Ruh Roh {other} didn't choose {i}")
+
+
+                    st.write(f'Your score this round: {score}')
                     st.write(f"All of {other}'s answers: ")
                     st.write(entry['fields'][f'{other}-Answer'])
                     table.update(rec_id,{f'{User}-Score':score})
