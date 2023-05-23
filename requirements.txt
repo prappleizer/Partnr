@@ -5,3 +5,5 @@ pandas
 streamlit-drawable-canvas
 altair
 streamlit-extras
+st-star-ratings
+numpy

@@ -2,6 +2,7 @@ import streamlit as st
 
 
 from streamlit_extras.add_vertical_space import add_vertical_space
+from streamlit_star_rating import st_star_rating
 from pyairtable import Table
 from pyairtable.formulas import match
 import time
@@ -194,9 +195,19 @@ with tab3:
     st.write("### Here's one of your matches 😏")
     matches,maybes = retrieve_matches(table)
     choice = np.random.choice(matches)
-    if hasattr(i,'noimg'):
+    st.write(choice.Name)
+    if hasattr(choice,'noimg'):
         st.markdown(i.Description)
     else:
-        st.image(f"./img/crop/{i.Number}.jpg",use_column_width='always')
-        
+        st.image(f"./img/crop/{choice.Number}.jpg",use_column_width='always')
+    st.write("#### Tried it? What'd you think?")
+    rating = st_star_rating('How 🔥?', 5, 3, 30)
+    diff = st_star_rating('How comfortable?', 5, 3, 30)
+    reroll = st.button('Roll a new Option')
+    if reroll:
+        choice = np.random.choice(matches)
+
+
+
+
 
