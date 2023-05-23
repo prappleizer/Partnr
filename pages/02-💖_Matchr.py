@@ -209,36 +209,35 @@ with tab2:
 
 
 with tab3: 
-    placeholder=st.empty()
     st.write("### Here's one of your matches 😏")
-    with placeholder.form('submit-rating',clear_on_submit=True):
-        matches = retrieve_untried_matches(table)
-        query= np.random.choice(matches)
-        st.write(query.Name)
-        if hasattr(query,'noimg'):
-            st.markdown(query.Description)
-        else:
-            st.image(f"./img/crop/{query.Number}.jpg",use_column_width='always')
-        st.write("#### Tried it? What'd you think?")
-    
-        cols = st.columns(3)
-        with cols[0]:
-            #rating = st_star_rating('🔥 Rating', 5, 3, 25)
-            rating = st.slider('rating',1,5,3,1)
-        with cols[1]:
-            #diff = st_star_rating('Difficulty', 5, 3, 25)
-            diff = st.slider('difficulty',1,5,3,1,)
-        with cols[2]:
-            #comf = st_star_rating('Comfort',5,3,25)
-            comf= st.slider('comfort',1,5,3,1)
-        submit_extra = st.form_submit_button('Submit-rating-form')
-        st.write(query.Name)
-        st.write(query.id)
-    if submit_extra:
-        #print('test')
-        st.write(query.Name)
-        st.write(query.id)
-        table.update(query.id,{f'{User}-rating':rating,f'{User}-difficulty':diff,f'{User}-comfort':comf,'tried':'Yes'})
+    matches = retrieve_untried_matches(table)
+    query= np.random.choice(matches)
+    st.write(query.Name)
+    if hasattr(query,'noimg'):
+        st.markdown(query.Description)
+    else:
+        st.image(f"./img/crop/{query.Number}.jpg",use_column_width='always')
+    st.write("#### Tried it? What'd you think?")
+
+    cols = st.columns(3)
+    with cols[0]:
+        #rating = st_star_rating('🔥 Rating', 5, 3, 25)
+        rating = st.slider('rating',1,5,3,1)
+        if rating:
+            table.update(query.id,{f'{User}-rating':rating,'tried':'Yes'})
+    with cols[1]:
+        #diff = st_star_rating('Difficulty', 5, 3, 25)
+        diff = st.slider('difficulty',1,5,3,1,)
+        if diff:
+            table.update(query.id,{f'{User}-difficulty':diff,'tried':'Yes'})
+    with cols[2]:
+        #comf = st_star_rating('Comfort',5,3,25)
+        comf= st.slider('comfort',1,5,3,1)
+        if comf:
+            table.update(query.id,{f'{User}-comfort':comf,'tried':'Yes'})
+    st.write(query.Name)
+    st.write(query.id)
+        
 
     reroll = st.button('Roll a new Option')
     if reroll:
