@@ -81,7 +81,13 @@ def retrieve_completed_records_by_fields(table,fields):
                 return_recs.append(Record(i))
     return return_recs
 
-def retrieve_matches(table):
+def retrieve_all_matches(table):
+    formula = match({'Imad-Interest':'Fuck-Yes','Chloe-Interest':'Fuck-Yes'})
+    fuck_yes_all = table.all(formula=formula)
+    formula = match({'Imad-Interest':'Fuck-Yes','Chloe-Interest':'Yes'})
+    fuck_yes1 = table.all(formula=formula)
+    formula = match({'Imad-Interest':'Yes','Chloe-Interest':'Fuck-Yes'})
+    fuck_yes2 = table.all(formula=formula)
     formula = match({'Imad-Interest':'Yes','Chloe-Interest':'Yes'})
     yes = table.all(formula=formula)
     formula = match({'Imad-Interest':'Yes','Chloe-Interest':'Maybe'})
@@ -91,7 +97,7 @@ def retrieve_matches(table):
     formula = match({'Imad-Interest':'Maybe','Chloe-Interest':'Yes'})
     maybe3 = table.all(formula=formula)
 
-    yesses = [Record(i) for i in yes]
+    yesses = [Record(i) for i in fuck_yes_all] + [Record(i) for i in fuck_yes1] + [Record(i) for i in fuck_yes2] + [Record(i) for i in yes]
     maybes = [Record(i) for i in maybe1]+[Record(i) for i in maybe2]+[Record(i) for i in maybe3]
     return yesses,maybes
 
@@ -134,20 +140,43 @@ def retrieve_random_untried(table):
     unattempted = retrieve_untried_matches(table)
     return np.random.choice(unattempted)
 
+def get_match_strength(record):
+    levels = [getattr(record,f'{User}-Interest'),getattr(record,f'{other}-Interest')]
+    set_ver = list(set(levels))
+    if len(set_ver)==1:
+        if set_ver[0]=='Fuck-Yes':
+            return '❤️‍🔥❤️‍🔥❤️‍🔥❤️‍🔥❤️‍🔥'
+        elif set_ver[0]=='Yes':
+            return "❤️‍🔥❤️‍🔥❤️‍🔥"
+        elif set_ver[0]=="Maybe":
+            return "❤️‍🔥"
+    else:
+        if set(["Fuck-Yes","Yes"]) == set(levels):
+            return "❤️‍🔥❤️‍🔥❤️‍🔥❤️‍🔥"
+        elif set(['Yes','Maybe']) == set(levels):
+            return "❤️‍🔥❤️‍🔥"
+        elif set(['Fuck-Yes','Maybe']) == set(levels):
+            return "❓❤️‍🔥❓"
+
+
+
 table = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets['AIRTABLE_BASE_ID'],'Positions')
 # First retrieve all positions for which YOU have not swiped
 if 'matchr_choice' not in st.session_state.keys():
     st.session_state.matchr_choice = retrieve_first_empty_record_by_field(table,f'{User}-Interest')
     #st.session_state.matchr_choice = Record(table.first(formula=match({'noimg':'Yes'})))
 if 'query' not in st.session_state.keys():
-    st.session_state.query = retrieve_random_untried(table) 
+    try:
+        st.session_state.query = retrieve_random_untried(table) 
+    except:
+        st.session_state.query = None
 
 
 
 
 #pic = st.empty() 
 #title = st.empty()
-tab1, tab2,tab3,tab4,tab5 = st.tabs(["Explore","Matches ✅","Top Picks 🔥","Roll the Dice 🎲","Our Ratings ⭐️"])
+tab1, tab2,tab3,tab4 = st.tabs(["Explore","Top Picks 🔥","Roll the Dice 🎲","Our Ratings ⭐️"])
 
 with tab1:
     placeholder = st.empty()
@@ -222,29 +251,29 @@ with tab1:
                     st.experimental_rerun()
 
 
-with tab2:
-    matches,maybes = retrieve_matches(table)
-    col1, col2 = st.columns(2)
-    with col1:
-        st.write('### Matches ✅')
-        for i in matches:
-            st.write(i.Name)
-            with st.expander("See Card/Image"):
-                if hasattr(i,'noimg'):
-                    st.markdown(i.Description)
-                else:
-                    st.image(f"./img/crop/{i.Number}.jpg",use_column_width='always')
-    with col2:
-        st.write('### Maybes....')
-        for i in maybes:
-            st.write(i.Name)
-            with st.expander("See Card/Image"):
-                if hasattr(i,'noimg'):
-                    st.markdown(i.Description)
-                else:
-                    st.image(f"./img/crop/{i.Number}.jpg",use_column_width='always')
+# with tab2:
+#     matches,maybes = retrieve_all_matches(table)
+#     col1, col2 = st.columns(2)
+#     with col1:
+#         st.write('### Matches ✅')
+#         for i in matches:
+#             st.write(i.Name)
+#             with st.expander("See Card/Image"):
+#                 if hasattr(i,'noimg'):
+#                     st.markdown(i.Description)
+#                 else:
+#                     st.image(f"./img/crop/{i.Number}.jpg",use_column_width='always')
+#     with col2:
+#         st.write('### Maybes....')
+#         for i in maybes:
+#             st.write(i.Name)
+#             with st.expander("See Card/Image"):
+#                 if hasattr(i,'noimg'):
+#                     st.markdown(i.Description)
+#                 else:
+#                     st.image(f"./img/crop/{i.Number}.jpg",use_column_width='always')
 
-with tab3: 
+with tab2: 
     st.write('Your Top Picks 🔥')
     top_picks = retrieve_top_picks(table)
     for i in top_picks:
@@ -256,9 +285,10 @@ with tab3:
     st.divider()
 
 
-with tab4: 
+with tab3: 
     st.write("### Here's one of your matches 😏")
     st.write(st.session_state.query.Name)
+    st.metric('Match Strength',get_match_strength(st.session_state.query))
     query_id = st.session_state.query.id
     if hasattr(st.session_state.query,'noimg'):
         st.markdown(st.session_state.query.Description)
@@ -296,7 +326,7 @@ with tab4:
         st.experimental_rerun()
 
 
-with tab5:
+with tab4:
     attempted = retrieve_attempted(table)
     for record in attempted:
         st.write(f'#### {record.Name}')
