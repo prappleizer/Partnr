@@ -247,20 +247,20 @@ with tab4:
             st.write(f"**{User}'s ratings**")
             cols = st.columns(3)
             with cols[0]:
-                st_star_rating('🔥 Rating',5,getattr(record,f"{User}-rating"),25,read_only=True)
+                st_star_rating('🔥 Rating',5,getattr(record,f"{User}-rating"),25,read_only=True,key='user-rating-readonly')
             with cols[1]:
-                st_star_rating('Difficulty',5,getattr(record,f"{User}-difficulty"),25,read_only=True)
+                st_star_rating('Difficulty',5,getattr(record,f"{User}-difficulty"),25,read_only=True,key='user-diff-readonly')
             with cols[2]:
-                st_star_rating('Comfort',5,getattr(record,f"{User}-comfort"),25,read_only=True)
+                st_star_rating('Comfort',5,getattr(record,f"{User}-comfort"),25,read_only=True,key='user-comf-readonly')
         if hasattr(record,f"{other}-rating"):
             st.write(f"**{other}'s ratings**")
             cols = st.columns(3)
             with cols[0]:
-                st_star_rating('🔥 Rating',5,getattr(record,f"{other}-rating"),25,read_only=True)
+                st_star_rating('🔥 Rating',5,getattr(record,f"{other}-rating"),25,read_only=True,key='other-rating-readonly')
             with cols[1]:
-                st_star_rating('Difficulty',5,getattr(record,f"{other}-difficulty"),25,read_only=True)
+                st_star_rating('Difficulty',5,getattr(record,f"{other}-difficulty"),25,read_only=True,key='other-diff-readonly')
             with cols[2]:
-                st_star_rating('Comfort',5,getattr(record,f"{other}-comfort"),25,read_only=True)
+                st_star_rating('Comfort',5,getattr(record,f"{other}-comfort"),25,read_only=True,key='other-comf-readonly')
         st.divider()
         
 
