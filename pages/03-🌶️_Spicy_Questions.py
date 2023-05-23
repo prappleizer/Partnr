@@ -117,8 +117,8 @@ if len(dates)>0:
     with col1:
         st.write(f'#### My Answer on {date_use}')
         st.write(question)
-        st.write(f"*{my_answer}*")
+        st.write(f"*{my_answer.strip()}*")
     with col2:
         st.write(f"#### {other}'s Answer on {date_use}")
         st.write(question)
-        st.write(f"*{their_answer}*")
+        st.write(f"*{their_answer.strip()}*")
