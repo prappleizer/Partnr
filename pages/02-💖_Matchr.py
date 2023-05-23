@@ -234,10 +234,10 @@ with tab3:
 
             st.experimental_rerun()
 
-        reroll = st.button('Roll a new Option')
-        if reroll:
-            st.session_state.matchr_current_rater =  np.random.choice(matches)
-            st.experimental_rerun()
+    reroll = st.button('Roll a new Option')
+    if reroll:
+        #st.session_state.matchr_current_rater =  np.random.choice(matches)
+        st.experimental_rerun()
 
 
 with tab4:
