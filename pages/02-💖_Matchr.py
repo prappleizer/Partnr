@@ -241,9 +241,9 @@ with tab3:
 
         
 
-    reroll = st.button('Roll a new Option')
-    if reroll:
-        query =  np.random.choice(retrieve_untried_matches(table))
+    # reroll = st.button('Roll a new Option')
+    # if reroll:
+    #     query =  np.random.choice(retrieve_untried_matches(table))
 
 
 with tab4:
