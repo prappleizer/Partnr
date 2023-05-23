@@ -237,14 +237,14 @@ with tab3:
             #    table.update(query.id,{f'{User}-comfort':comf,'tried':'Yes'})
         submit_my_ratings = st.form_submit_button('Label')
     if submit_my_ratings:
-        st.write(f'updating table entry {st.session_state.query.Name} with id {st.session_state.query.id}')
+        #st.write(f'updating table entry {st.session_state.query.Name} with id {st.session_state.query.id}')
         table.update(st.session_state.query.id,{f'{User}-comfort':comf,'tried':'Yes',f'{User}-difficulty':diff,f'{User}-rating':rating})
-
+        st.session_state.query = retrieve_random_untried(table)
         
 
-    # reroll = st.button('Roll a new Option')
-    # if reroll:
-    #     query =  np.random.choice(retrieve_untried_matches(table))
+    reroll = st.button('Roll a new Option')
+    if reroll:
+        st.session_state.query =  retrieve_random_untried(table)
 
 
 with tab4:
