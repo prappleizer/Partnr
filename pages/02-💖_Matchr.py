@@ -207,39 +207,37 @@ with tab2:
                 else:
                     st.image(f"./img/crop/{i.Number}.jpg",use_column_width='always')
 
-if 'matchr_current_rater' not in st.session_state.keys():
-    st.session_state.matchr_current_rater = None
+
 with tab3: 
     st.write("### Here's one of your matches 😏")
     with st.form('submit-rating'):
         matches = retrieve_untried_matches(table)
-        st.session_state.matchr_current_rater = np.random.choice(matches)
-        st.write(st.session_state.matchr_current_rater.Name)
-        if hasattr(st.session_state.matchr_current_rater,'noimg'):
-            st.markdown(st.session_state.matchr_current_rater.Description)
+        query= np.random.choice(matches)
+        st.write(query.Name)
+        if hasattr(query,'noimg'):
+            st.markdown(query.Description)
         else:
-            st.image(f"./img/crop/{st.session_state.matchr_current_rater.Number}.jpg",use_column_width='always')
+            st.image(f"./img/crop/{query.Number}.jpg",use_column_width='always')
         st.write("#### Tried it? What'd you think?")
     
         cols = st.columns(3)
         with cols[0]:
             #rating = st_star_rating('🔥 Rating', 5, 3, 25)
-            rating = st.slider('rating',1,5,3,1,key=st.session_state.matchr_current_rater.id+st.session_state.matchr_current_rater.Name)
+            rating = st.slider('rating',1,5,3,1)
         with cols[1]:
             #diff = st_star_rating('Difficulty', 5, 3, 25)
-            diff = st.slider('rating',1,5,3,1,key=st.session_state.matchr_current_rater.id+st.session_state.matchr_current_rater.Name)
+            diff = st.slider('difficulty',1,5,3,1,)
         with cols[2]:
             #comf = st_star_rating('Comfort',5,3,25)
-            comf= st.slider('rating',1,5,3,1,key=st.session_state.matchr_current_rater.id+st.session_state.matchr_current_rater.Name)
+            comf= st.slider('comfort',1,5,3,1)
         submit_extra = st.form_submit_button('Submit')
         if submit_extra:
-            table.update(st.session_state.matchr_current_rater.id,{f'{User}-rating':rating,f'{User}-difficulty':diff,f'{User}-comfort':comf,'tried':'Yes'})
-
-
+            #print('test')
+            table.update(query.id,{f'{User}-rating':rating,f'{User}-difficulty':diff,f'{User}-comfort':comf,'tried':'Yes'})
 
     reroll = st.button('Roll a new Option')
     if reroll:
-        st.session_state.matchr_current_rater =  np.random.choice(matches)
+        query =  np.random.choice(retrieve_untried_matches(table))
 
 
 with tab4:
