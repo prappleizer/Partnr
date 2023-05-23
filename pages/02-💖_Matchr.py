@@ -228,8 +228,8 @@ with tab3:
             diff = st_star_rating('Difficulty', 5, 3, 25)
         with cols[2]:
             comf = st_star_rating('Comfort',5,3,25)
-        submit = st.form_submit_button('Submit')
-        if submit:
+        submit_extra = st.form_submit_button('Submit')
+        if submit_extra:
             table.update(st.session_state.matchr_current_rater.id,{f'{User}-rating':rating,f'{User}-difficulty':diff,f'{User}-comfort':comf,'tried':'Yes'})
 
 
