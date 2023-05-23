@@ -100,7 +100,6 @@ def retrieve_untried_matches(table):
     yes = table.all(formula=formula)
     yesses = [Record(i) for i in yes]
     yesses = [i for i in yesses if not hasattr(i,'tried')]
-    st.write(yesses)
     return yesses
 
 
@@ -222,30 +221,32 @@ with tab3:
     with st.form('some-random-name'):
         cols = st.columns(3)
         with cols[0]:
-            #rating = st_star_rating('🔥 Rating', 5, 3, 25)
-            rating = st.slider('rating',1,5,3,1)
+            rating = st_star_rating('🔥 Rating', 5, 3, 25)
+            #rating = st.slider('rating',1,5,3,1)
             #if rating:
             #    table.update(query.id,{f'{User}-rating':rating,'tried':'Yes'})
         with cols[1]:
-            #diff = st_star_rating('Difficulty', 5, 3, 25)
-            diff = st.slider('difficulty',1,5,3,1,)
+            diff = st_star_rating('Difficulty', 5, 3, 25)
+            #diff = st.slider('difficulty',1,5,3,1,)
             #if diff:
             #    table.update(query.id,{f'{User}-difficulty':diff,'tried':'Yes'})
         with cols[2]:
-            #comf = st_star_rating('Comfort',5,3,25)
-            comf= st.slider('comfort',1,5,3,1)
+            comf = st_star_rating('Comfort',5,3,25)
+            #comf= st.slider('comfort',1,5,3,1)
             #if comf:
             #    table.update(query.id,{f'{User}-comfort':comf,'tried':'Yes'})
-        submit_my_ratings = st.form_submit_button('Label')
+        submit_my_ratings = st.form_submit_button('Submit')
     if submit_my_ratings:
         #st.write(f'updating table entry {st.session_state.query.Name} with id {st.session_state.query.id}')
         table.update(st.session_state.query.id,{f'{User}-comfort':comf,'tried':'Yes',f'{User}-difficulty':diff,f'{User}-rating':rating})
         st.session_state.query = retrieve_random_untried(table)
+        st.experimental_rerun()
         
 
     reroll = st.button('Roll a new Option')
     if reroll:
         st.session_state.query =  retrieve_random_untried(table)
+        st.experimental_rerun()
 
 
 with tab4:
