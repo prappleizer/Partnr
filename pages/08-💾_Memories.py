@@ -11,7 +11,7 @@ else:
     other = "Imad"
 
 
-IMAGES = ["./img/memories/IMG_3196.jpg"]
+IMAGES = ["https://github.com/prappleizer/Partnr/blob/main/img/memories/IMG_3196.JPG?raw=true"]
 
 
 def slideshow_swipeable(images):
