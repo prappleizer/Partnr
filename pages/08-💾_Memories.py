@@ -33,7 +33,7 @@ def slideshow_swipeable(images):
 
         # Use mui.Stack to vertically display the slideshow and the pagination centered.
         # https://mui.com/material-ui/react-stack/#usage
-        with mui.Stack(spacing=2, alignItems="center"):
+        with mui.Stack(spacing=1, alignItems="center"):
 
             # Create a swipeable view that updates st.session_state[key] thanks to sync().
             # It also sets the index so that changing the pagination (see below) will also
@@ -42,7 +42,7 @@ def slideshow_swipeable(images):
             # https://react-swipeable-views.com/demos/demos/
             with mui.SwipeableViews(index=index, resistance=True, onChangeIndex=sync(key)):
                 for image in images:
-                    html.img(src=image, css={"width": "100%"})
+                    html.img(src=image, css={"width": "90%"})
 
             # Create a handler for mui.Pagination.
             # https://mui.com/material-ui/react-pagination/#controlled-pagination
@@ -54,7 +54,7 @@ def slideshow_swipeable(images):
             # As the index value can also be updated by the swipeable view, we explicitely
             # set the page value to index+1 (page value starts at 1).
             # https://mui.com/material-ui/react-pagination/#controlled-pagination
-            mui.Pagination(page=index+1, count=len(images), color="primary", onChange=handle_change)
+            mui.Pagination(page=index+1, count=len(images), color="#f54284", onChange=handle_change)
 
 
 
