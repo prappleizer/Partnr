@@ -54,7 +54,7 @@ def slideshow_swipeable(images):
             # As the index value can also be updated by the swipeable view, we explicitely
             # set the page value to index+1 (page value starts at 1).
             # https://mui.com/material-ui/react-pagination/#controlled-pagination
-            mui.Pagination(page=index+1, count=len(images), color="#f54284", onChange=handle_change)
+            mui.Pagination(page=index+1, count=len(images), color="Primary", onChange=handle_change)
 
 
 
