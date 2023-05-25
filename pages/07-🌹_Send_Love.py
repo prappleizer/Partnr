@@ -36,30 +36,55 @@ st.title('Send Love')
 cols = st.columns(6)
 
 with cols[0]:
-    hug = st.button('Send a Hug')
+    hug = st.button('Send a Hug 🫂')
     if hug:
         send_push(other,f'{User} sent you a Hug 🫂')
 with cols[1]: 
-    kiss = st.button('Send a Kiss')
+    kiss = st.button('Send a Kiss 💋')
     if kiss:
         send_push(other,f'{User} sent you a Kiss 💋')
 with cols[2]:
-    vibes = st.button('Send Good Vibes')
+    vibes = st.button('Send Good Vibes 🌈')
     if vibes:
         send_push(other,f'{User} sent you Good Vibes 🌈')
 with cols[3]:
-    missing = st.button('Send an I Miss You')
+    missing = st.button('Send an I Miss You 😞')
     if missing:
         send_push(other,f'{User} misses you 😞')
 with cols[4]:
-    attention = st.button('Ask for Attention')
+    attention = st.button('Ask for Attention 🛎')
     if attention:
         send_push(other,f'{User} would like some attention 🛎')
 with cols[5]:
-    cuddles = st.button('Ask for Cuddles')
+    cuddles = st.button('Ask for Cuddles 🧸')
     if cuddles:
         send_push(other,f'{User} would like some cuddles please 🧸')
 
+cols2 = st.columns(6)
+with cols2[0]:
+    think = st.button('Send a Thinking about You 🥺')
+    if think:
+        send_push(other,f'{User} is thinking about you 🥺')
+with cols2[1]:
+    want = st.button('Send an I Want You 🥵')
+    if want:
+        send_push(other,f'{User} WANTS you rn 🥵')
+with cols2[2]:
+    pretty = st.button("Send a You're so pretty 😍")
+    if pretty:
+        send_push(other,f"{User} thinks you're pretty 😍")
+with cols2[3]:
+    proud = st.button("Send an I'm Proud of U 🎉")
+    if proud:
+        send_push(other,f"{User} is proud of you 🎉")
+with cols2[4]:
+    not_you = st.button("Send 'It's Not You ❤️")
+    if not_you:
+        send_push(other,f"{User} wants u to know that their mood isn't bc of you ❤️")
+with cols2[5]:
+    hungy = st.button("Send an I'm Hungy 🍽")
+    if hungy:
+        send_push(other,f"{User}'s hungy... wanna go eat? 🍽")
 
 table = Table(st.secrets['AIRTABLE_API_KEY'],st.secrets["AIRTABLE_BASE_ID"],"Letters")
 with st.form('long note',clear_on_submit=True):
