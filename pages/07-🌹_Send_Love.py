@@ -36,15 +36,15 @@ st.title('Send Love')
 cols = st.columns(6)
 
 with cols[0]:
-    hug = st.button('Send a Hug 🫂')
+    hug = st.button(f'Send {other} a Hug 🫂')
     if hug:
         send_push(other,f'{User} sent you a Hug 🫂')
 with cols[1]: 
-    kiss = st.button('Send a Kiss 💋')
+    kiss = st.button(f'Send {other} a Kiss 💋')
     if kiss:
         send_push(other,f'{User} sent you a Kiss 💋')
 with cols[2]:
-    vibes = st.button('Send Good Vibes 🌈')
+    vibes = st.button(f'Send {other} Good Vibes 🌈')
     if vibes:
         send_push(other,f'{User} sent you Good Vibes 🌈')
 with cols[3]:
@@ -78,7 +78,7 @@ with cols2[3]:
     if proud:
         send_push(other,f"{User} is proud of you 🎉")
 with cols2[4]:
-    not_you = st.button("Send 'It's Not You ❤️")
+    not_you = st.button("Send 'It's Not You ❤️'")
     if not_you:
         send_push(other,f"{User} wants u to know that their mood isn't bc of you ❤️")
 with cols2[5]:
