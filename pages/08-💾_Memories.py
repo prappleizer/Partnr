@@ -11,8 +11,7 @@ else:
     other = "Imad"
 
 
-IMAGES = ["./img/memories/IMG_2988.HEIC"
-]
+IMAGES = ["./img/memories/IMG_3196.jpg"]
 
 
 def slideshow_swipeable(images):
