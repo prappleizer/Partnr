@@ -62,7 +62,7 @@ with cols[5]:
 
 cols2 = st.columns(6)
 with cols2[0]:
-    think = st.button('Send a Thinking about You 🥺')
+    think = st.button('Thinking about You 🥺')
     if think:
         send_push(other,f'{User} is thinking about you 🥺')
 with cols2[1]:
