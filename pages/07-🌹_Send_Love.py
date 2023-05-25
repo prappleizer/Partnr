@@ -44,7 +44,7 @@ with cols[1]:
     if kiss:
         send_push(other,f'{User} sent you a Kiss 💋')
 with cols[2]:
-    vibes = st.button(f'Send {other} Good Vibes 🌈')
+    vibes = st.button(f'Send Good Vibes 🌈')
     if vibes:
         send_push(other,f'{User} sent you Good Vibes 🌈')
 with cols[3]:
