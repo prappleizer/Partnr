@@ -7,3 +7,4 @@ altair
 streamlit-extras
 st-star-rating
 numpy
+streamlit-elements
